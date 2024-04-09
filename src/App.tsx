@@ -1,25 +1,18 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import 'bulma/css/bulma.min.css';
+import './styles/global.scss';
+import './styles/app.scss'
+
+import { BoardProvider } from './context/BoardContext';
+import { TodosProvider } from './context/TodosContext';
+import { Board } from './pages/Board';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BoardProvider>
+      <TodosProvider>
+        <Board />
+      </TodosProvider>
+    </BoardProvider>
   );
 }
 
