@@ -7,7 +7,7 @@ export const createBoardOnServer = async (
 ) => {
   try {
     await createBoard(query);
-    setTodos({ completed: [], inProcess: [], notCompleted: [] });
+    setTodos({ complete: [], inProcess: [], notCompleted: [] });
   } catch (error) {
     console.log(error);
   };
@@ -17,7 +17,7 @@ export const sortTodosByStatus = (
   todos: Todo[],
   setTodos: React.Dispatch<React.SetStateAction<Todos>>,
 ) => {
-  const completed: Todo[] = [];
+  const complete: Todo[] = [];
   const inProcess: Todo[] = [];
   const notCompleted: Todo[] = [];
 
@@ -27,7 +27,7 @@ export const sortTodosByStatus = (
     };
 
     if (todo?.complete) {
-      completed.push(todo);
+      complete.push(todo);
     };
 
     if (todo?.inProcess) {
@@ -37,7 +37,7 @@ export const sortTodosByStatus = (
   })
 
   setTodos({
-    completed: completed.reverse(),
+    complete: complete.reverse(),
     inProcess: inProcess.reverse(),
     notCompleted: notCompleted.reverse(),
   });
@@ -60,11 +60,11 @@ export const editTodo = async (
   id: string,
   text: string,
   description: string,
-  completed?: boolean,
+  complete?: boolean,
   inProcess?: boolean,
 ) => {
   try {
-    await updateTodo(id, text, description, completed, inProcess);
+    await updateTodo(id, text, description, complete, inProcess);
   } catch (error) {
     console.log(error);
   };

@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react';
-import { useDrag } from 'react-dnd';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import './style.scss'
@@ -21,10 +20,9 @@ interface CardProps {
 };
 
 const Card: React.FC<CardProps> = ({ isEmpty, todo }) => {
-  const { setTodos, onDrag } = useTodosContext();
+  const { setTodos } = useTodosContext();
   const { boardName } = useBoardContext();
   const [isEditingMode, setIsEditingMode] = useState(false);
-  let offsetDebounce = { x: 0, y: 0 };
 
   const { register, handleSubmit, reset } = useForm<Todo>({
     mode: 'all',
@@ -36,33 +34,6 @@ const Card: React.FC<CardProps> = ({ isEmpty, todo }) => {
       description: todo?.description,
     },
   });
-
-  const [{ isDragging }, drag] = useDrag(() => ({
-    type: 'todo',
-    item: todo,
-    collect(monitor) {
-      const isDragging = monitor.isDragging();
-
-      if (isDragging) {
-        const offset = monitor.getDifferenceFromInitialOffset() || {
-          x: 0,
-          y: 0,
-        };
-
-        offsetDebounce = offset;
-      }
-
-      return {
-        isDragging,
-      };
-    },
-  }), [boardName]);
-
-  useEffect(() => {
-    if (todo && isDragging) {
-      onDrag(todo);
-    };
-  }, [isDragging, onDrag, todo]);
 
   const addHandler = async (data: Todo) => {
     if (!data?.text) {
@@ -107,16 +78,7 @@ const Card: React.FC<CardProps> = ({ isEmpty, todo }) => {
   };
 
   return (
-    <div
-      ref={drag}
-      style={{
-        position: "relative",
-        top: isDragging ? offsetDebounce.y + "px" : "0px",
-        left: isDragging ? offsetDebounce.x + "px" : "0px",
-        zIndex: isDragging ? 1 : 0,
-      }}
-      className={`cardContainer ${isDragging && 'dragging'}`}
-    >
+    <div className="cardContainer">
       {isEditingMode ? (
         <CardForm
           isEmpty={isEmpty}

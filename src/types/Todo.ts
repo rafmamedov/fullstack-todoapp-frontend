@@ -7,9 +7,9 @@ export interface Todo {
 };
 
 export interface Todos {
-  completed: Todo[];
+  complete: Todo[];
   inProcess: Todo[];
   notCompleted: Todo[];
 };
 
-export type Status = 'completed' | 'inProcess' | 'notCompleted';
+export type Status = 'complete' | 'inProcess' | 'notCompleted';

@@ -1,30 +1,44 @@
 import React, { createContext, useState, useContext, ReactNode } from 'react';
-import { Todo, Todos } from '../types/Todo';
+import { Status, Todo, Todos } from '../types/Todo';
 
 interface TodosContextType {
   todos: Todos;
   setTodos: React.Dispatch<React.SetStateAction<Todos>>;
-  onDrag: (todo: Todo) => void;
+  onChangeOrder:  (
+    sourceStatus: Status,
+    destStatus: Status,
+    sourceIndex: number,
+    destIndex: number,
+    todo: Todo,
+  ) => void;
 }
 
 const TodosContext = createContext<TodosContextType | undefined>(undefined);
 
 export const TodosProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [todos, setTodos] = useState<Todos>({
-    completed: [],
+    complete: [],
     inProcess: [],
     notCompleted: [],
   });
 
-  const onDrag = (todo: Todo) => {
-    setTodos(current => ({
-      completed: current.completed.filter(item => item._id !== todo._id),
-      inProcess: current.inProcess.filter(item => item._id !== todo._id),
-      notCompleted: current.notCompleted.filter(item => item._id !== todo._id),
-    }));
+  const onChangeOrder = (
+    sourceStatus: Status,
+    destStatus: Status,
+    sourceIndex: number,
+    destIndex: number,
+    todo: Todo,
+  ) => {
+    setTodos((prevTodos) => {
+      const newTodos = { ...prevTodos };
+      newTodos[sourceStatus].splice(sourceIndex, 1);
+      newTodos[destStatus].splice(destIndex, 0, todo);
+  
+      return newTodos;
+    });
   };
 
-  const contextValue: TodosContextType = { todos, setTodos, onDrag };
+  const contextValue: TodosContextType = { todos, setTodos, onChangeOrder };
 
   return <TodosContext.Provider value={contextValue}>{children}</TodosContext.Provider>;
 };
