@@ -3,9 +3,9 @@ import { DragDropContext, DropResult, Droppable } from 'react-beautiful-dnd'
 import './style.scss';
 
 import { Status } from '../../types/Todo';
-import TodoList from '../todolist/TodoList';
 import { editTodo } from '../../utils/helpers';
 import { useTodosContext } from '../../context/TodosContext';
+import TodoList from '../todolist/TodoList';
 
 interface Column {
   id: Status;
