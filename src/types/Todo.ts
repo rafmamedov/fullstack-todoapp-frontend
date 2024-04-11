@@ -1,3 +1,8 @@
+export interface Column {
+  id: Status;
+  title: string;
+};
+
 export interface Todo {
   _id: string;
   text: string;

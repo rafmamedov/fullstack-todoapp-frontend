@@ -1,22 +1,16 @@
-import { DragDropContext, DropResult, Droppable } from 'react-beautiful-dnd'
+import {
+  Droppable,
+  DropResult,
+  DragDropContext,
+} from 'react-beautiful-dnd'
 
 import './style.scss';
 
 import { Status } from '../../types/Todo';
 import { editTodo } from '../../utils/helpers';
 import { useTodosContext } from '../../context/TodosContext';
+import { COLUMNS } from '../../utils/constants';
 import TodoList from '../todolist/TodoList';
-
-interface Column {
-  id: Status;
-  title: string;
-}
-
-const COLUMNS: Column[] = [
-  { id: 'notCompleted', title: 'To Do' },
-  { id: 'inProcess', title: 'In progress' },
-  { id: 'complete', title: 'Completed' },
-];
 
 const MainSection = () => {
   const { todos, onChangeOrder } = useTodosContext();
