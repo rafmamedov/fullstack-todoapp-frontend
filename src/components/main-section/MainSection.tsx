@@ -9,13 +9,15 @@ import './style.scss';
 import { Status } from '../../types/Todo';
 import { editTodo } from '../../utils/helpers';
 import { useTodosContext } from '../../context/TodosContext';
+import { useBoardContext } from '../../context/BoardContext';
 import { COLUMNS } from '../../utils/constants';
 import TodoList from '../todolist/TodoList';
 
 const MainSection = () => {
-  const { todos, onChangeOrder } = useTodosContext();
+  const { boardName } = useBoardContext();
+  const { todos, setTodos, onChangeOrder } = useTodosContext();
 
-  const onDragEnd = (result: DropResult) => {
+  const onDragEnd = async (result: DropResult) => {
     const { source, destination } = result;
   
     if (!destination) {
@@ -43,7 +45,18 @@ const MainSection = () => {
     const inProcess = destination.droppableId === 'inProcess';
 
     const { _id, text, description } = draggedTodo;
-    editTodo(_id, text, description, complete, inProcess);
+
+    if (source.droppableId !== destination.droppableId) {
+      await editTodo(
+        _id,
+        text,
+        description,
+        boardName,
+        setTodos,
+        complete,
+        inProcess,
+      );
+    }
   };
 
   return (
@@ -64,6 +77,7 @@ const MainSection = () => {
                   style={{  height: '100%', flexGrow: 1 }}
                 >
                   <TodoList id={id} />
+                  {provided.placeholder}
                 </div>
               )}
             </Droppable>

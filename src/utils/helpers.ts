@@ -60,11 +60,14 @@ export const editTodo = async (
   id: string,
   text: string,
   description: string,
+  boardName: string,
+  setTodos: React.Dispatch<React.SetStateAction<Todos>>,
   complete?: boolean,
   inProcess?: boolean,
 ) => {
   try {
     await updateTodo(id, text, description, complete, inProcess);
+    await refetchTodos(boardName, setTodos)
   } catch (error) {
     console.log(error);
   };

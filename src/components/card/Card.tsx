@@ -58,10 +58,25 @@ const Card: React.FC<CardProps> = ({ isEmpty, todo }) => {
   }
 
   const updateHandler = async (data: Todo) => {
-    const { _id, text, description, complete, inProcess } = data;
+    const { text, description } = data;
 
-    await editTodo(_id, text, description, complete, inProcess);
-    await refetchTodos(boardName, setTodos);
+    const isEdited = text !== todo?.text ||
+    description !== todo?.description
+
+    if (todo && isEdited) {
+      await editTodo(
+        todo['_id'],
+        text,
+        description,
+        boardName,
+        setTodos,
+        todo.complete,
+        todo.inProcess,
+      );
+
+      await refetchTodos(boardName, setTodos);
+    };
+
     setIsEditingMode(false);
   };
 
