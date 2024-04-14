@@ -15,6 +15,8 @@ const Header = () => {
   const [isFetching, setIsFetching] = useState(false);
 
   const fetchTodos = async () => {
+    if (inputQuery.length < 1) return;
+
     setIsFetching(true);
     setBoardName(inputQuery)
 
